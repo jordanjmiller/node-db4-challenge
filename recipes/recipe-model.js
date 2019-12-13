@@ -1,7 +1,7 @@
 const db = require('../data/db-config.js');
 
 module.exports = {
-    find,
+    find: getRecipes,
     findById,
     findSteps,
     add, 
@@ -12,7 +12,7 @@ module.exports = {
 // - `find()`:
 //   - Calling find returns a promise that resolves to an array of all schemes in the database.
 //   - No steps are included.
-function find() {
+function getRecipes() {
     return db('recipes');
 }
 
