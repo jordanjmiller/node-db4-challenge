@@ -1,12 +1,10 @@
 const db = require('../data/db-config.js');
 
 module.exports = {
-    find: getRecipes,
+    getRecipes,
     findById,
     findSteps,
-    add, 
-    update, 
-    remove
+    findIngredients,
 }
 
 // - `find()`:
@@ -28,15 +26,23 @@ function findById(id) {
 //   - Expects a scheme `id`.
 //   - Resolves to an array of all correctly ordered step for the given scheme: `[ { id: 17, scheme_name: 'Find the Holy Grail', step_number: 1, instructions: 'quest'}, { id: 18, scheme_name: 'Find the Holy Grail', step_number: 2, instructions: '...and quest'}, etc. ]`.
 //   - This array should include the `scheme_name` _not_ the `scheme_id`.
-function findSteps(id) {
-    return db('steps')
-        .where({scheme_id: id})
-        .join('schemes', 'steps.scheme_id', 'schemes.id')
+function findIngredients(id) {
+    return db('ingredientsList')
+        .where({recipe_id: id})
+        .join('ingredients as i', 'i.id', 'ingredientsList.ingredient_id')
         .select(
-            'steps.id',
-            'schemes.scheme_name',
-            'steps.step_number',
-            'steps.instructions'
+            'i.ingredient_name',
+            'ingredientsList.quantity',
+        );
+}
+function findSteps(id) {
+    return db('stepsList')
+        .where({recipe_id: id})
+        .join('steps as s', 's.id', 'stepsList.step_id')
+        .select(
+            'stepsList.step_number',
+            's.step_name',
+            's.step_details',
         );
 }
 

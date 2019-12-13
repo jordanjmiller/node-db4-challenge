@@ -20,6 +20,7 @@ exports.up = function(knex) {
         .notNullable();
       })
       .createTable('ingredientsList', tbl => {
+        tbl.integer('quantity')
         tbl.integer('recipe_id')
           .unsigned()
           .notNullable()
